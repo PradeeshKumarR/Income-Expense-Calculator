@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Income Expense Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- If using Tailwind, link it here -->
+  </head>
+  <body>
+    <div class="container">
+      <h1>Income Expense Calculator</h1>
+
+      <!-- Filter Section -->
+      <div class="filters">
+        <label>
+          <input type="radio" name="filter" value="all" checked /> All
+        </label>
+        <label>
+          <input type="radio" name="filter" value="income" /> Income
+        </label>
+        <label>
+          <input type="radio" name="filter" value="expense" /> Expense
+        </label>
+      </div>
+
+      <!-- Input Section -->
+      <div class="form-section">
+        <input type="text" id="description" placeholder="Description" />
+        <input type="number" id="amount" placeholder="Amount" />
+        <button id="addEntry">Add Entry</button>
+        <button id="resetButton">Reset</button>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="summary">
+        <div>Total Income: <span id="totalIncome">$0</span></div>
+        <div>Total Expense: <span id="totalExpense">$0</span></div>
+        <div>Net Balance: <span id="netBalance">$0</span></div>
+      </div>
+
+      <!-- Entries Section -->
+      <ul id="entriesList">
+        <!-- List of entries will be added dynamically here -->
+      </ul>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
