@@ -17,10 +17,11 @@ This is a simple Income and Expense Calculator built with HTML, CSS, and JavaScr
 ## How to Use
 
 1. Enter a description and amount for your income or expense.
-2. Click "Add Entry" to add it to the list.
-3. Use the radio buttons to filter entries by "All", "Income", or "Expense".
-4. Edit or delete entries as needed.
-5. Click "Reset" to clear the input fields.
+2. Select the expense type for the description and amount.
+3. Click "Add Entry" to add it to the list.
+4. Use the radio buttons to filter entries by "All", "Income", or "Expense".
+5. Edit or delete entries as needed.
+6. Click "Reset" to clear the input fields.
 
 ## Setting Up
 
