@@ -30,6 +30,6 @@ This is a simple Income and Expense Calculator built with HTML, CSS, and JavaScr
 ## Technologies Used
 
 - HTML
-- CSS (Tailwind or custom)
+- CSS
 - JavaScript (DOM manipulation)
 - LocalStorage for data persistence
