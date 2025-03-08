@@ -1,110 +1,99 @@
+//Selecting elements
 const descriptionInput = document.getElementById('description');
 const amountInput = document.getElementById('amount');
-const addEntryBtn = document.getElementById('addEntry');
-const resetBtn = document.getElementById('resetButton');
-const entriesList = document.getElementById('entriesList');
-const totalIncomeSpan = document.getElementById('totalIncome');
-const totalExpenseSpan = document.getElementById('totalExpense');
-const netBalanceSpan = document.getElementById('netBalance');
+const typeSelect = document.getElementById('type');
+const addButton = document.getElementById('add-entry');
+const resetButton = document.getElementById('reset-fields');
+const totalIncomeSpan = document.getElementById('total-income');
+const totalExpenseSpan = document.getElementById('total-expense');
+const netBalanceSpan = document.getElementById('net-balance');
+const entriesList = document.getElementById('entries-list');
 const filterRadios = document.querySelectorAll('input[name="filter"]');
 
+//Load entries from local storage
 let entries = JSON.parse(localStorage.getItem('entries')) || [];
 
-function updateLocalStorage() {
-    localStorage.setItem('entries', JSON.stringify(entries));
-}
-
-function updateSummary() {
-    const totalIncome = entries.filter(entry => entry.type === 'income').reduce((sum, entry) => sum + entry.amount, 0);
-    const totalExpense = entries.filter(entry => entry.type === 'expense').reduce((sum, entry) => sum + entry.amount, 0);
-    const netBalance = totalIncome - totalExpense;
-
-    totalIncomeSpan.textContent = `$${totalIncome.toFixed(2)}`;
-    totalExpenseSpan.textContent = `$${totalExpense.toFixed(2)}`;
-    netBalanceSpan.textContent = `$${netBalance.toFixed(2)}`;
-}
-
-function renderEntries() {
+// Function to render entries
+function renderEntries(filter = 'all') {
     entriesList.innerHTML = '';
-    const filter = Array.from(filterRadios).find(radio => radio.checked).value;
+    let filteredEntries = entries;
 
-    const filteredEntries = filter === 'all' ? entries : entries.filter(entry => entry.type === filter);
+    if (filter === 'income') {
+        filteredEntries = entries.filter(entry => entry.type === 'income');
+    } else if (filter === 'expense') {
+        filteredEntries = entries.filter(entry => entry.type === 'expense');
+    }
 
-    filteredEntries.forEach(entry => {
+    filteredEntries.forEach((entry, index) => {
         const li = document.createElement('li');
         li.classList.add(entry.type);
-
-        const description = document.createElement('span');
-        description.textContent = `${entry.description}: $${entry.amount.toFixed(2)}`;
-
-        const actions = document.createElement('div');
-
-        const editBtn = document.createElement('button');
-        editBtn.textContent = 'Edit';
-        editBtn.addEventListener('click', () => editEntry(entry.id));
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('delete');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', () => deleteEntry(entry.id));
-
-        actions.appendChild(editBtn);
-        actions.appendChild(deleteBtn);
-        li.appendChild(description);
-        li.appendChild(actions);
-
+        li.innerHTML = `
+        <span>${entry.description} - $${entry.amount}</span>
+        <div class="actions">
+        <button type="button" class="edit" onclick="editEntry(${index})">Edit</button>
+        <button type="button" class="delete" onclick="deleteEntry(${index})">Delete</button>
+        <div/>
+        `;
         entriesList.appendChild(li);
     });
 
-    updateSummary();
+    calculateTotals();
 }
 
-function addEntry() {
+// Function to calculate totals
+function calculateTotals() {
+    const totalIncome = entries.filter(entry => entry.type === 'income').reduce((sum, entry) => sum + parseFloat(entry.amount), 0);
+    const totalExpense = entries.filter(entry => entry.type === 'expense').reduce((sum, entry) => sum + parseFloat(entry.amount), 0);
+    const netBalance = totalIncome - totalExpense;
+
+    totalIncomeSpan.innerHTML = `$ ${totalIncome.toFixed(2)}`;
+    totalExpenseSpan.innerHTML = `$ ${totalExpense.toFixed(2)}`;
+    netBalanceSpan.innerHTML = `$ ${netBalance.toFixed(2)}`;
+}
+
+//Add Entry
+addButton.addEventListener('click', () => {
     const description = descriptionInput.value;
-    const amount = parseFloat(amountInput.value);
+    const amount = amountInput.value;
+    const type = typeSelect.value;
 
-    if (!description || isNaN(amount)) {
-        alert('Please provide valid description and amount.');
-        return;
+    if (description && !isNaN(amount)) {
+        entries.push({ description, amount, type });
+        localStorage.setItem('entries', JSON.stringify(entries));
+        renderEntries();
+        descriptionInput.value = '';
+        amountInput.value = '';
     }
+})
 
-    const newEntry = {
-        id: Date.now(),
-        description,
-        amount,
-        type: amount >= 0 ? 'income' : 'expense',
-    };
-
-    entries.push(newEntry);
-    updateLocalStorage();
-    renderEntries();
-
+//Reset input fields
+resetButton.addEventListener('click', () => {
     descriptionInput.value = '';
     amountInput.value = '';
-}
+})
 
-function editEntry(id) {
-    const entry = entries.find(entry => entry.id === id);
+//Edit entry
+function editEntry(index) {
+    const entry = entries[index];
     descriptionInput.value = entry.description;
     amountInput.value = entry.amount;
-
-    deleteEntry(id); // Remove the entry to allow for updating it later
+    typeSelect.value = entry.type;
+    deleteEntry(index); //remove the original entry and let the user update it
 }
 
-function deleteEntry(id) {
-    entries = entries.filter(entry => entry.id !== id);
-    updateLocalStorage();
+//Delete entry
+function deleteEntry(index) {
+    entries.splice(index, 1);
+    localStorage.setItem('entries', JSON.stringify(entries));
     renderEntries();
 }
 
-function resetInputs() {
-    descriptionInput.value = '';
-    amountInput.value = '';
-}
+//Filter entries
+filterRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+        renderEntries(radio.value);
+    })
+});
 
-addEntryBtn.addEventListener('click', addEntry);
-resetBtn.addEventListener('click', resetInputs);
-filterRadios.forEach(radio => radio.addEventListener('change', renderEntries));
-
-// Initialize the app
+// Initial render
 renderEntries();
