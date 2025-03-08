@@ -5,44 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Income Expense Calculator</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- If using Tailwind, link it here -->
   </head>
   <body>
     <div class="container">
-      <h1>Income Expense Calculator</h1>
+      <header>
+        <h1>Income Expense Calculator</h1>
+      </header>
 
-      <!-- Filter Section -->
-      <div class="filters">
-        <label>
-          <input type="radio" name="filter" value="all" checked /> All
-        </label>
-        <label>
-          <input type="radio" name="filter" value="income" /> Income
-        </label>
-        <label>
-          <input type="radio" name="filter" value="expense" /> Expense
-        </label>
-      </div>
+      <section class="input-section">
+        <input
+          type="text"
+          name="description"
+          id="description"
+          placeholder="Description"
+          required
+        />
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          placeholder="Amount"
+          required
+        />
 
-      <!-- Input Section -->
-      <div class="form-section">
-        <input type="text" id="description" placeholder="Description" />
-        <input type="number" id="amount" placeholder="Amount" />
-        <button id="addEntry">Add Entry</button>
-        <button id="resetButton">Reset</button>
-      </div>
+        <select name="type" id="type">
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
 
-      <!-- Summary Section -->
-      <div class="summary">
-        <div>Total Income: <span id="totalIncome">$0</span></div>
-        <div>Total Expense: <span id="totalExpense">$0</span></div>
-        <div>Net Balance: <span id="netBalance">$0</span></div>
-      </div>
+        <button type="button" id="add-entry">Add Entry</button>
+        <button type="button" id="reset-fields">Reset</button>
+      </section>
 
-      <!-- Entries Section -->
-      <ul id="entriesList">
-        <!-- List of entries will be added dynamically here -->
-      </ul>
+      <section class="filter-section">
+        <input type="radio" name="filter" id="all" value="all" checked />
+        <label for="all">All</label>
+        <input type="radio" name="filter" id="income" value="income" />
+        <label for="income">Income</label>
+        <input type="radio" name="filter" id="expense" value="expense" />
+        <label for="expense">Expense</label>
+      </section>
+
+      <section class="overview">
+        <div>Total Income: <span id="total-income">$ 0</span></div>
+        <div>Total Expense: <span id="total-expense">$ 0</span></div>
+        <div>Net Balance: <span id="net-balance">$ 0</span></div>
+      </section>
+
+      <section class="entries">
+        <h2>Entries</h2>
+        <ul id="entries-list"></ul>
+      </section>
     </div>
 
     <script src="script.js"></script>
