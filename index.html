@@ -1,63 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income Expense Calculator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>Income Expense Calculator</h1>
-      </header>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <!-- =========================
+             App Header
+        ========================== -->
+        <header>
+            <h1>Income Expense Calculator</h1>
+        </header>
 
-      <section class="input-section">
-        <input
-          type="text"
-          name="description"
-          id="description"
-          placeholder="Description"
-          required
-        />
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          placeholder="Amount"
-          required
-        />
+        <!-- =========================
+             Entry Form Section
+        ========================== -->
+        <form class="input-section" autocomplete="off" aria-label="Add income or expense entry" onsubmit="return false;">
+            <!-- Description Input -->
+            <label for="description">Description</label>
+            <input 
+                type="text" 
+                id="description" 
+                name="description" 
+                placeholder="Description" 
+                required 
+                autocomplete="off"
+            >
 
-        <select name="type" id="type">
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+            <!-- Amount Input -->
+            <label for="amount">Amount</label>
+            <input 
+                type="number" 
+                id="amount" 
+                name="amount" 
+                placeholder="Amount" 
+                min="0.01" 
+                step="0.01" 
+                required
+            >
 
-        <button type="button" id="add-entry">Add Entry</button>
-        <button type="button" id="reset-fields">Reset</button>
-      </section>
+            <!-- Type Selector -->
+            <label for="type">Type</label>
+            <select id="type" name="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
 
-      <section class="filter-section">
-        <input type="radio" name="filter" id="all" value="all" checked />
-        <label for="all">All</label>
-        <input type="radio" name="filter" id="income" value="income" />
-        <label for="income">Income</label>
-        <input type="radio" name="filter" id="expense" value="expense" />
-        <label for="expense">Expense</label>
-      </section>
+            <!-- Form Action Buttons -->
+            <div class="input-actions">
+                <button type="button" id="add-entry">Add Entry</button>
+                <button type="button" id="reset-fields">Reset</button>
+            </div>
+        </form>
 
-      <section class="overview">
-        <div>Total Income: <span id="total-income">$ 0</span></div>
-        <div>Total Expense: <span id="total-expense">$ 0</span></div>
-        <div>Net Balance: <span id="net-balance">$ 0</span></div>
-      </section>
+        <!-- =========================
+             Filter Section
+        ========================== -->
+        <section class="filter-section" aria-label="Filter entries">
+            <fieldset>
+                <legend>Filter</legend>
+                <label for="filter-all">
+                    <input type="radio" id="filter-all" name="filter" value="all" checked>
+                    All
+                </label>
+                <label for="filter-income">
+                    <input type="radio" id="filter-income" name="filter" value="income">
+                    Income
+                </label>
+                <label for="filter-expense">
+                    <input type="radio" id="filter-expense" name="filter" value="expense">
+                    Expense
+                </label>
+            </fieldset>
+        </section>
 
-      <section class="entries">
-        <h2>Entries</h2>
-        <ul id="entries-list"></ul>
-      </section>
-    </div>
+        <!-- =========================
+             Overview Section
+        ========================== -->
+        <section class="overview" aria-label="Financial overview">
+            <div>Total Income: <span id="total-income">0</span></div>
+            <div>Total Expenses: <span id="total-expenses">0</span></div>
+            <div>Net Balance: <span id="net-balance">0</span></div>
+        </section>
 
+        <!-- =========================
+             Entries List Section
+        ========================== -->
+        <section class="entries" aria-label="Entries list">
+            <h2>Entries</h2>
+            <ul id="entries-list" aria-live="polite"></ul>
+        </section>
+    </main>
+    <!-- Main JavaScript file -->
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
